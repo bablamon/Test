@@ -54,7 +54,10 @@ function buildTrackUri(trackId) {
 module.exports = async (req, res) => {
   try {
     // --- AUTH ---
-    const apiKey = req.headers['api-key'] || req.headers['api_key'];
+    const apiKey =
+  req.query.apiKey ||
+  req.headers['api-key'] ||
+  req.headers['api_key'];
     if (!apiKey || apiKey !== SECRET_API_KEY) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -130,3 +133,4 @@ module.exports = async (req, res) => {
     });
   }
 };
+
