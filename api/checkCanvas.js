@@ -10,31 +10,30 @@ const SP_DC = process.env.SP_DC;
 
 // Get Spotify web-player access token using sp_dc cookie
 async function getCanvasTokenWithSpDc() {
-  if (!SP_DC) {
-    throw new Error('SP_DC environment variable not set');
-  }
+  if (!SP_DC) throw new Error('SP_DC not set');
+  if (!process.env.SP_KEY) throw new Error('SP_KEY not set');
 
   const CANVAS_TOKEN_URL =
     'https://open.spotify.com/get_access_token?reason=transport&productType=web_player';
 
   const res = await axios.get(CANVAS_TOKEN_URL, {
     headers: {
-      // Core bits
-      Cookie: `sp_dc=${SP_DC}`,
+      Cookie: `sp_dc=${SP_DC}; sp_key=${process.env.SP_KEY}`,
       'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
-        '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       Accept: 'application/json',
       'Accept-Language': 'en'
     }
   });
 
-  if (res.status !== 200 || !res.data || !res.data.accessToken) {
+  if (!res.data || !res.data.accessToken) {
+    console.log('Response:', res.data);
     throw new Error('Failed to fetch canvas token');
   }
 
   return res.data.accessToken;
 }
+
 
 // Extract track ID from a Spotify track URL
 function extractTrackIdFromUrl(url) {
@@ -133,4 +132,5 @@ module.exports = async (req, res) => {
     });
   }
 };
+
 
