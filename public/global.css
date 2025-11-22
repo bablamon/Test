@@ -1,0 +1,11 @@
+body {
+  background-color: #2a2c37;
+  text-align: center;
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
+    'Arial', sans-serif;
+  color: #EFEFEF; /* whiteish */
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
